@@ -19,22 +19,24 @@ public class Client {
 
 
 	public Client() {
-		try {
+	    while(true) {
+            try {
 
-			mSocket = new Socket(serverAddress, port);
+                mSocket = new Socket(serverAddress, port);
 
-			System.out.println("connect to server ....  "+ port);
+                System.out.println("connect to server ....  " + port);
 
-			BufferedReader input = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
-			String answer = input.readLine();
-			//JOptionPane.showMessageDialog(null, answer);
-			System.out.println(answer);
-			System.exit(0);
-		} catch (UnknownHostException e) {
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-
+                BufferedReader input = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+                String answer = input.readLine();
+                //JOptionPane.showMessageDialog(null, answer);
+                System.out.println(answer);
+               // System.exit(0);
+                input.close();
+            } catch (UnknownHostException e) {
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 	}
 
 	public static void main(String[] args) {

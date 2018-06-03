@@ -13,7 +13,7 @@ import java.util.*;
 		public Server() {
 			String command = "sdf";
 			String[] strArray;
-			String concatStr="sadf";
+			String concatStr="";
 
 			while (!command.equals("end")) {
 				System.out.print("Enter Command:  ");
@@ -22,49 +22,40 @@ import java.util.*;
 				if (strArray[0].equals("start")) {
 					serverPort = Integer.parseInt(strArray[1]);
 					try {
-						// create server socket!
-						mServer = new ServerSocket(serverPort);
+                        // create server socket!
+                        mServer = new ServerSocket(serverPort);
 
-						System.out.println("Server Created!");
+                        System.out.println("Server Created!");
 
-						// wait for client
-						Socket socket = mServer.accept();
-
-						// horaaaaa
-						System.out.println("Connected to	" + serverPort);
-
-						try {
-							PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-							out.println("test Message");
-						} finally {
-							socket.close();
-						}
-
-
-
-
-					} catch (IOException e) {System.out.println(e);}
-					finally {
-						//mServer.close();
+                        // wait for client
+                        Socket socket = mServer.accept();
+                        // horaaaaa
+                        System.out.println("Connected to	" + serverPort);
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        out.println("connect to server");
+                        out.close();
+                    }catch (IOException ex ){
+						ex.printStackTrace();
+						try{mServer.close();}catch(IOException e){}
 					}
 
 				}
 				else if(strArray[0].equals("send")){
+                    concatStr="";
 					for(int i=1;i<strArray.length;i++){
-						concatStr+=strArray[i];
+						concatStr+=strArray[i]+" ";
 					}
-
-					try {
-						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-						out.println("test Message");
-					} finally {
-						socket.close();
-					}
-
-
+                    try {
+                        Socket socket = mServer.accept();
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        out.println(concatStr);
+                        out.close();
+                    }catch (IOException ex){}
 				}
 				else if (strArray[0].equals("exit")) {
-//						mServer.close();
+				    try {
+                        mServer.close();
+                    }catch (IOException ex){}
 				}
 
 
@@ -72,7 +63,11 @@ import java.util.*;
 		}
 
 			public static void main (String[]args){
-				new Server();
+
+                    new Server();
+
+
+
 			}
 
 	}
